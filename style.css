@@ -1,0 +1,470 @@
+body{
+    width: 100%;
+    height: 5000px;
+    background-color: rgb(255, 255, 255);
+
+}
+
+.navbar-custom {
+    height: 80px;
+}
+
+.navbar-brand.part1 {
+    flex: 1 0 20%;
+}
+
+.navbar-nav.part2 {
+    flex: 1 0 60%;
+}
+
+.social-icons.part3 {
+    flex: 1 0 20%;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+
+.btn-custom {
+    color:  #1c1b1bd3;
+    /* background-color: #DBDFD0; */
+    border-radius: 50px;
+    border: none;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-variant:calc();
+    color:  #1c1b1bd3;
+    
+}
+
+.btn-custom:hover {
+    background-color: #DBDFD0;
+    color: white;
+}
+
+.navbar-toggler {
+    order: 1;
+    margin-left: auto;
+}
+
+.navbar-nav .nav-link {
+    color: black;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color:  #DBDFD0;
+    color: white;
+}
+
+.social-icons button {
+    background: none;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 16px;
+    margin: 0 4px;
+}
+
+.social-icons i {
+    font-size: 30px;
+    color: black;
+
+}
+
+
+
+.social-icons button:hover .bi-facebook {
+    color: #3b5998; /* Facebook blue */
+}
+
+.social-icons button:hover .bi-twitter {
+    color: #1DA1F2; /* Twitter blue */
+}
+
+.social-icons button:hover .bi-youtube {
+    color: #FF0000; /* YouTube red */
+}
+
+/* -------------------------------------bg-image */
+.img-section {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.img-section img {
+    width: 100%;
+    height: auto;
+    display: block; /* Ensures the image fits well in the container */
+}
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:  #180f0fcc;
+    text-align: center;
+    width: 80%; /* Adjust this value as needed */
+}
+
+.text-overlay h1 {
+    font-size: 5rem; /* Example of a larger font size */
+    font-weight:400 ;
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 5px rgb(228, 218, 201);
+}
+
+
+.text-overlay p {
+    font-size: 1.2rem;
+    margin: 0;
+    text-shadow: 2px 2px 5px rgba(195, 254, 132, 0.7); /* Optional: Adds a shadow to the text */
+}
+
+/* Button1----------------------- */
+/* From Uiverse.io by MuhammadHasann */ 
+button {
+    position: relative;
+    margin-top: 45px;
+    padding: 15px 45px;
+    background: #fec195;
+    font-size: 17px;
+    font-weight: 500;
+    color: #181818;
+    cursor: pointer;
+    border: 1px solid #fec195;
+    border-radius: 8px;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+  }
+  
+  button:hover {
+    border: 1px solid #f3b182;
+    background: linear-gradient(
+      85deg,
+      #fec195,
+      #fcc196,
+      #fabd92,
+      #fac097,
+      #fac39c
+    );
+    animation: wind 2s ease-in-out infinite;
+  }
+  
+  @keyframes wind {
+    0% {
+      background-position: 0% 50%;
+    }
+  
+    0% {
+      background-position: 50% 100%;
+    }
+  
+    0% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .icon-1 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25px;
+    transform-origin: 0 0;
+    transform: rotate(10deg);
+    transition: all 0.5s ease-in-out;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+  }
+  
+  button:hover .icon-1 {
+    animation: slay-1 3s cubic-bezier(0.52, 0, 0.58, 1) infinite;
+    transform: rotate(10deg);
+  }
+  
+  @keyframes slay-1 {
+    0% {
+      transform: rotate(10deg);
+    }
+  
+    50% {
+      transform: rotate(-5deg);
+    }
+  
+    100% {
+      transform: rotate(10deg);
+    }
+  }
+  
+  .icon-2 {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    width: 12px;
+    transform-origin: 50% 0;
+    transform: rotate(10deg);
+    transition: all 1s ease-in-out;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+  }
+  
+  button:hover .icon-2 {
+    animation: slay-2 3s cubic-bezier(0.52, 0, 0.58, 1) 1s infinite;
+    transform: rotate(0);
+  }
+  
+  @keyframes slay-2 {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    50% {
+      transform: rotate(15deg);
+    }
+  
+    100% {
+      transform: rotate(0);
+    }
+  }
+  
+  .icon-3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    transform-origin: 50% 0;
+    transform: rotate(-5deg);
+    transition: all 1s ease-in-out;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+  }
+  
+  button:hover .icon-3 {
+    animation: slay-3 2s cubic-bezier(0.52, 0, 0.58, 1) 1s infinite;
+    transform: rotate(0);
+  }
+  
+  @keyframes slay-3 {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    50% {
+      transform: rotate(-5deg);
+    }
+  
+    100% {
+      transform: rotate(0);
+    }
+  }
+  
+
+/* ------------------Cards-------- */
+.card {
+    border-radius: 0.5rem; 
+    border: 1px solid #343a40; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.5s ease, transform 0.5s ease; 
+}
+
+.card:hover {
+    box-shadow: 4px 4px 8px gray;
+    transform: translateY(-4px); 
+}
+
+.food-items{
+  width: 50px;
+  
+}
+
+
+/* For homepage cards  */
+#home_Cart_Show {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1rem; 
+}
+
+.card {
+  flex: 1 1 calc(25% - 1rem); 
+  margin-bottom: 1rem;
+}
+
+.card img {
+  width: 100%;
+  height: auto; 
+}
+
+
+/* FOr the healthy image section part Part+1 +  (part-2+part-3+part-4 ) */
+.div-real {
+  width: 100%; /* Ensure it takes full width of its container */
+  max-width: 1200px; /* Optional: Limit the maximum width */
+  padding: 20px; /* Optional: Add some padding */
+  background-color: #fff; /* Optional: Add a background color */
+}
+
+.part-1 img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.small-img {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 70%;
+  height: auto;
+}
+
+.part-2, .part-3, .part-4 {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .div-real {
+      grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .div-real {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+}
+
+  .part-2, .part-3, .part-4 {
+      text-align: center;
+  }
+
+  .small-img {
+      position: static;
+      margin: 10px auto;
+  }
+}
+
+
+/* Social Media Logo CSS in Footer */
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+.fa-google {
+  background: #dd4b39;
+  color: white;
+}
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-youtube {
+  background: #bb0000;
+  color: white;
+}
+
+.fa-instagram {
+  background: #125688;
+  color: white;
+}
+
+.fa-pinterest {
+  background: #cb2027;
+  color: white;
+}
+
+.fa-snapchat-ghost {
+  background: #fffc00;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.fa-skype {
+  background: #00aff0;
+  color: white;
+}
+
+.fa-android {
+  background: #a4c639;
+  color: white;
+}
+
+.fa-dribbble {
+  background: #ea4c89;
+  color: white;
+}
+
+.fa-vimeo {
+  background: #45bbff;
+  color: white;
+}
+
+.fa-tumblr {
+  background: #2c4762;
+  color: white;
+}
+
+.fa-vine {
+  background: #00b489;
+  color: white;
+}
+
+.fa-foursquare {
+  background: #45bbff;
+  color: white;
+}
+
+.fa-stumbleupon {
+  background: #eb4924;
+  color: white;
+}
+
+.fa-flickr {
+  background: #f40083;
+  color: white;
+}
+
+.fa-yahoo {
+  background: #430297;
+  color: white;
+}
+
+.fa-soundcloud {
+  background: #ff5500;
+  color: white;
+}
+
+.fa-reddit {
+  background: #ff5700;
+  color: white;
+}
+
+.fa-rss {
+  background: #ff6600;
+  color: white;
+}
+
+
+
+
+
+
+/* ---------------------------Order----------------------- */

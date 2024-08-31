@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Swiffy Carosel CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+    <!-- Add Custom Css -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>FoodFLowery Restaurent</title>
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-custom">
+        <div class="container-fluid">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+            style="width: 110px;" alt="logo">
+<a class="navbar-brand part1"  style="color: red; font-size: 30px;" href="#">BestroBliss Restaurent</a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+                <ul class="navbar-nav part2">
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom mx-2" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom mx-2" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom mx-2" href="menu.html">Menu</a>
+                    </li>
+                  
+                    
+                    <li class="nav-item" style="display: none;" id="display-profile-button">
+                        <a class="nav-link btn-custom mx-2" href="userDetail.html">Your Profile</a>
+                    </li>
+                    <li class="nav-item"  id="display-profile-button">
+                        <a class="nav-link btn-custom mx-2" href="order.html">Order</a>
+                    </li>
+
+                    <li class="nav-item" id="signup-link">
+                        <a class="nav-link btn-custom mx-2" href="signup.html">Signup</a>
+                    </li>
+                    <li class="nav-item" id="login-link">
+                        <a class="nav-link btn-custom mx-2" href="login.html">Login</a>
+                    </li>
+
+                    <li class="nav-item" id="logout-link" style="display: none;">
+                        <a onclick="handleLogout()" class="nav-link btn-custom mx-2" style="color: red;">Logout</a>
+                    </li>
+
+
+                </ul>
+            </div>
+            <div class="social-icons part3 d-flex justify-content-end">
+                <a href="https://www.facebook.com/yourprofile" class="btn-custom" aria-label="Facebook" target="_blank">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://twitter.com/yourprofile" class="btn-custom" aria-label="Twitter" target="_blank">
+                    <i class="bi bi-twitter"></i>
+                </a>
+                <a href="https://www.youtube.com/watch?v=rbHIj9kMBYY" class="btn-custom" aria-label="YouTube" target="_blank">
+                    <i class="bi bi-youtube"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="img-section">
+            <img src="./image/backround iamge.jpg" alt="Background Image">
+            <div class="text-overlay">
+                <h1>Check best offer</h1>
+                <p>Discover delectable cuisine and unforgettable moments <br> in our welcoming, culinary haven.</p>
+                 <a href="menu.html"> <button> Browse Menu </button></a>
+            </div>
+        </div>
+
+        <div class="div" style="background-color:rgba(249, 249, 247, 1); margin: 20px; border-radius: 15px;">
+
+            <h1 class="text-center mb-5 menu-header" style="font-size: 50px; font-weight: 120; margin-top: 25px;">
+                Get Offer in Our Food Items...
+            </h1>
+
+            <div class="container mt-5">
+                <div class="d-flex flex-wrap" id="home_Cart_Show">
+                    <!-- Cards will be injected here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <main class="container mt-4" style="display: none;">
+        <h1 class="text-center">Your Cart Details</h1>
+        <table class="table table-bordered border-primary" id="cart-table">
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Food Image</th>
+                    <th>Price($)</th>
+                    <th>Stock</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="cart-table-body">
+                <!-- Cart items will be dynamically added here -->
+            </tbody>
+        </table>
+        <hr>
+        <h3 class="text-center">Total Price:$<span id="total"></span> </h3>
+        <hr>
+    </main>
+
+
+    <div class="div mt-5" style="background-color:rgba(249, 249, 247, 1); margin: 20px; border-radius: 15px;">
+        <div class="div-real container-fluid">
+            <div class="row">
+                <!-- Left Side: Part 1 -->
+                <div class="col-md-6 part-1 d-flex justify-content-center">
+                    <div class="position-relative">
+                        <img style="width: 90%; height: auto;  border-radius: 10px;" src="./image/healthy big image.jpg" alt="">
+                        <img class="small-img" style="width: 60%; height: 60%; border-radius: 10px;" src="./image/healthy address.jpg"
+                            alt="">
+                    </div>
+                </div>
+
+                <!-- Right Side: Part 2 + Part 3 + Part 4 -->
+                <div class="col-md-6 d-flex flex-column align-items-start justify-content-center">
+                    <div class="part-2 mb-4">
+                        <h5 class="text-center menu-header" style="font-size: 2.5rem; font-weight: 120;">We provide
+                            healthy <br /> food for your family.</h5>
+                    </div>
+                    <div class="part-3 mb-4">
+                        <p><strong>Our story began with a vision to create a unique dining experience that merges fine
+                                dining,
+                                exceptional service, and a vibrant ambiance. Rooted in city's rich culinary culture, we
+                                aim to honor
+                                our local roots while infusing a global palate.</strong></p>
+                    </div>
+                    <div class="part-4">
+                        <p>At place, we believe that dining is not just about food, but also about the overall
+                            experience. Our
+                            staff, renowned for their warmth and dedication, strives to make every visit an
+                            unforgettable event.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="row col-md-12 mt-5" style="padding: 50px;background-color:rgba(249, 249, 247, 1);">
+        <h1 class="text-left mb-4 menu-header" style="font-size: 50px; font-weight: 120; margin-top: 25px;">We also
+            offer unique <br /> services for your events
+        </h1>
+
+        <div class="col-md-3 text-center mb-4"
+            style="border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+            <img src="./image/catrings.jpg" style="border-radius: 10px; margin-top: 10px; width: 90%; height: auto;"
+                alt="Caterings" class="img-fluid">
+            <h3 style="margin-top: 10px;">Caterings</h3>
+            <p>In the new era of technology we look in the future<br /> with certainty for life.</p>
+        </div>
+
+        <div class="col-md-3 text-center mb-4"
+            style="border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+            <img src="./image/Birthday.jpg" style="border-radius: 10px; margin-top: 10px; width:90%; height: auto;"
+                alt="Birthdays" class="img-fluid">
+            <h3 style="margin-top: 10px;">Birthdays</h3>
+            <p>In the new era of technology we look in the future<br /> with certainty for life.</p>
+        </div>
+
+        <div class="col-md-3 text-center mb-4"
+            style="border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+            <img src="./image/weedings.jpg" style="border-radius: 10px; margin-top: 10px; width: 90%; height: auto;"
+                alt="Weddings" class="img-fluid">
+            <h3 style="margin-top: 10px;">Weddings</h3>
+            <p>In the new era of technology we look in the<br /> future with certainty for life.</p>
+        </div>
+
+        <div class="col-md-3 text-center mb-4"
+            style="border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+            <img src="./image/events.jpg" style="border-radius: 10px; margin-top: 10px; width: 90%; height: auto;"
+                alt="Events" class="img-fluid">
+            <h3 style="margin-top: 10px;">Events</h3>
+            <p>In the new era of technology we look in the future<br /> with certainty for life.</p>
+        </div>
+    </div>
+
+
+    <div class="row col-md-12 mt-5" style="padding: 50px; background-color: rgb(255, 255, 255);">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Left Side: Part 1 -->
+                <div class="col-md-7 d-flex align-items-center">
+                    <div class="row no-gutters">
+                        <!-- First Image: Takes 4 columns out of 8 -->
+                        <div class="col-md-6">
+                            <img style="width: 80%; margin-top: 20px; margin-left: 94px; border-radius: 10px; height: auto;"
+                                src="./image/fastest food man.jpg" alt="">
+                        </div>
+                        <!-- Second and Third Images: Take remaining 4 columns -->
+                        <div class="col-md-6  flex-column justify-content-between">
+                            <img style="border-radius: 10px; width:60%;" class="mb-2"
+                                src="./image/col 1 photo first food man .jpg" alt="">
+                            <img style="border-radius: 10px;width: 60%; " src="./image/col 2 photo first food man .jpg"
+                                alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Part 2 -->
+                <div class="col-md-5 d-flex flex-column align-items-start justify-content-center"
+                    style=" border-radius: 10px; box-shadow: 4px 4px 8px rgb(211, 206, 206);">
+                    <div class="mb-4">
+                        <h1 class="text-center menu-header" style="font-size: 2.5rem; font-weight: 120;">Fastest Food
+                            Delivery in City
+                        </h1>
+                    </div>
+                    <div class="mb-4">
+                        <p><strong>Our visual designer lets you quickly and of drag a down your way to custom apps for
+                                both keep desktop.</strong></p>
+                    </div>
+                    <div>
+                        <h4>✔🚚 Delivery within 30 minutes</h4>
+                        <h4>✔ Best Offer & Prices</h4>
+                        <h4>✔ Delivery within 30 minutess</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 
+    <div class="col-md-12 row mt-5 gap-5" style=" padding-left: 220px;  background-color:rgba(249, 249, 247, 1);">
+        
+            <h1 class="text-center mb-4 menu-header" style="font-size: 50px; font-weight: 120; margin-top: 25px;">What Our
+                Customers Say
+            </h1>
+
+
+        <div class="col-md-3 text-center mb-4 card_one"
+            style="height: auto; width: 25%; border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+
+            <h3 style="margin-top: 10px; color: red;">“The best restaurant”</h3>
+            <p>Last night, we dined at place and were simply blown away. From the moment we stepped in, we were
+                enveloped in an inviting atmosphere and greeted with warm smiles.</p>
+
+            <div class="review_person" style="display: flex; align-items: center; justify-content: center;">
+                <p style="margin: 0; padding-right: 10px;">
+                    <img src="./image/1se femal comment.jpg" alt=""
+                        style="border-radius: 50%; width: 50px; height: 50px;">
+                </p>
+                <div style="text-align: left;">
+                    <h4 style="margin: 0;">Sophire Robson</h4>
+                    <h6 style="margin: 0; color: gray;">Los Angeles, LA</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="row col-md-3 text-center mb-4 card_one"
+            style="height: auto; width: 25%;  border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+
+            <h3 style="margin-top: 10px; color: red;">“The best restaurant”</h3>
+            <p>Last night, we dined at place and were simply blown away. From the moment we stepped in, we were
+                enveloped in an inviting atmosphere and greeted with warm smiles.</p>
+
+            <div class="review_person" style="display: flex; align-items: center; justify-content: center;">
+                <p style="margin: 0; padding-right: 10px;">
+                    <img src="./image/1se femal comment.jpg" alt=""
+                        style="border-radius: 50%; width: 50px; height: 50px;">
+                </p>
+                <div style="text-align: left;">
+                    <h4 style="margin: 0;">Sophire Robson</h4>
+                    <h6 style="margin: 0; color: gray;">Los Angeles, LA</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 text-center mb-4 card_one"
+            style="height: auto; width: 25%;  border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+
+            <h3 style="margin-top: 10px; color: red;">“The best restaurant”</h3>
+            <p>Last night, we dined at place and were simply blown away. From the moment we stepped in, we were
+                enveloped in an inviting atmosphere and greeted with warm smiles.</p>
+
+            <div class="review_person" style="display: flex; align-items: center; justify-content: center;">
+                <p style="margin: 0; padding-right: 10px;">
+                    <img src="./image/1se femal comment.jpg" alt=""
+                        style="border-radius: 50%; width: 50px; height: 50px;">
+                </p>
+                <div style="text-align: left;">
+                    <h4 style="margin: 0;">Sophire Robson</h4>
+                    <h6 style="margin: 0; color: gray;">Los Angeles, LA</h6>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div> -->
+
+
+
+
+    <div class="col-md-12 mt-5" style="padding: 50px; background-color: rgba(249, 249, 247, 1);">
+        <h1 class="text-center mb-5 menu-header" style="font-size: 50px; font-weight: 120; margin-top: 25px;">What Our
+            Customers Say
+        </h1>
+
+        <div class="review-container"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="text-center card_one"
+                style="height: auto; border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+                <h3 style="margin-top: 10px; color: red;">“The best restaurant”</h3>
+                <p style="display: flex; align-items: center; justify-content: center; height: 150px;">Last night, we
+                    dined at place and were simply blown away. From the moment we stepped in, we were
+                    enveloped in an inviting atmosphere and greeted with warm smiles.</p>
+                <hr />
+                <div class="review_person" style="display: flex; align-items: center; justify-content: center;">
+                    <p style="margin: 0; padding-right: 10px;">
+                        <img src="./image/1se femal comment.jpg" alt=""
+                            style="border-radius: 50%; width: 50px; height: 50px;">
+                    </p>
+
+                    <div style="text-align: left;">
+                        <h4 style="margin: 0;">Sophire Robson</h4>
+                        <h6 style="margin: 0; color: gray;">Los Angeles, LA</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center card_one"
+                style="height: auto; border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+                <h3 style="margin-top: 10px; color: red;">“Simply delicious”</h3>
+                <p style="display: flex; align-items: center; justify-content: center; height: 150px;">Place exceeded my
+                    expectations on all fronts. The ambiance was cozy and relaxed, making it a perfect venue for our
+                    anniversary dinner. Each dish was prepared and beautifully presented.</p>
+                <hr />
+                <div class="review_person" style="display: flex; align-items: center; justify-content: center;">
+                    <p style="margin: 0; padding-right: 10px;">
+                        <img src="./image/seconmd male cometn.jpg" alt=""
+                            style="border-radius: 50%; width: 50px; height: 50px;">
+                    </p>
+
+                    <div style="text-align: left;">
+                        <h4 style="margin: 0;">Matt Cannon</h4>
+                        <h6 style="margin: 0; color: gray;">San Diego, CA</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center card_one"
+                style="height: auto; border-radius: 15px; border: 1px solid rgb(221, 216, 216); box-shadow: 2px 2px 4px gray; padding: 10px;">
+                <h3 style="margin-top: 10px; color: red;">“One of a kind restaurant”</h3>
+                <p style="display: flex; align-items: center; justify-content: center; height: 150px;">The culinary
+                    experience at place is first to none. The atmosphere is vibrant, the food - nothing short of
+                    extraordinary. The food was the highlight of our evening. Highly recommended.</p>
+                <hr />
+                <div class="review_person" style="display: flex; align-items: center; justify-content: center;">
+                    <p style="margin: 0; padding-right: 10px;">
+                        <img src="./image/thrid femal commetn.jpg" alt=""
+                            style="border-radius: 50%; width: 50px; height: 50px;">
+                    </p>
+
+                    <div style="text-align: left;">
+                        <h4 style="margin: 0;">Andy Smith</h4>
+                        <h6 style="margin: 0; color: gray;">San Francisco, CA</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+          <!-- ----------------------------Footer ----------------------->
+    <div class="row col-md-12" style="padding: 50px; background-color: rgb(170, 170, 170);height: auto;">
+        <div class="col-md-3  mt-5">
+            <h2 style="color: white;">Bistro Bliss</h2>
+            <p>In the new era of technology we look abr <br> in the future with certainty and pride to <br> for our
+                company and.
+            </p>
+            <a href="#" class="fa fa-facebook"></a>
+            <a href="#" class="fa fa-twitter"></a>
+
+            <a href="#" class="fa fa-youtube"></a>
+            <a href="#" class="fa fa-instagram"></a>
+        </div>
+
+        <div class="col-md-3 d-flex gap-5  mt-5">
+            <div>
+                <p><strong>Pages</strong></p>
+                <p>Home</p>
+                <p>About</p>
+                <p>Menu</p>
+                <p>SignUp</p>
+            </div>
+
+
+            <div class="div">
+                <p><strong>Utility Pages</strong></p>
+                <p>Start Here</p>
+                <p>Styleguide</p>
+                <p>404 Not Found</p>
+                <p>Licenses</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="d-flex gap-2">
+                <img style="width: 200px; border-radius: 10px;" src="./image/catrings.jpg" alt="">
+                <img style="width: 200px;border-radius: 10px;" src="./image/events.jpg" alt="">
+            </div>
+            <br />
+            <div class="d-flex gap-2">
+                <img style="width: 200px;border-radius: 10px;" src="./image/weedings.jpg" alt="">
+                <img style="width: 200px;border-radius: 10px;" src="./image/Birthday.jpg" alt="">
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+
+    <script src="auth.js"></script>
+    <script src="logout.js"></script>
+    <script src="js/logout.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/order.js"></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <!-- Swiffy Carosel JavaScript(JS) CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
+        defer></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+
+
+
+</body>
+
+</html>
