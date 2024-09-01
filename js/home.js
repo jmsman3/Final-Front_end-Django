@@ -92,6 +92,7 @@ const placeOrder = (cartId, event) => {
 
     console.log('Placing order with cartId:', cartId);
     console.log('Token:', localStorage.getItem('token'));
+    console.log({ product: cartId, quantity: quantity });
 
     fetch('https://final-food-project.onrender.com/order/order_now', {
         method: 'POST',
@@ -106,6 +107,8 @@ const placeOrder = (cartId, event) => {
         return response.json().then(data => ({ response, data }));
     })
     .then(({ response, data }) => {
+        console.log(response);
+        console.log(data);
         if (response.ok) {
             console.log('Order placed successfully:', data);
             window.location.href = 'order.html';
