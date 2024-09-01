@@ -68,7 +68,7 @@ const displayOrderHistory = async () => {
     }
 
     try {
-        const response = await fetch('https://food-project-9vo4.onrender.com/order/order_now', {
+        const response = await fetch('https://final-food-project.onrender.com/order/order_now', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const displayOrderHistory = async () => {
 
         orders.forEach(order => {
             const row = document.createElement('tr');
-            const imageUrl = `https://food-project-9vo4.onrender.com${order.product.image}`;
+            const imageUrl = `https://final-food-project.onrender.com${order.product.image}`;
             row.innerHTML = `
                 <td>
                     <img src="${imageUrl || 'default-image.jpg'}" alt="${order.product.product_name}" style="width: 50px; height: auto;">

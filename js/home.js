@@ -93,7 +93,7 @@ const placeOrder = (cartId, event) => {
     console.log('Placing order with cartId:', cartId);
     console.log('Token:', localStorage.getItem('token'));
 
-    fetch('https://food-project-9vo4.onrender.com/order/order_now', {
+    fetch('https://final-food-project.onrender.com/order/order_now', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ const placeOrder = (cartId, event) => {
 
 const homePageCart = () => {
     console.log('acdddddddd')
-    fetch("https://food-project-9vo4.onrender.com/menu/products/")
+    fetch("https://final-food-project.onrender.com/menu/products/")
         .then(res => res.json())
         .then((data) => {homePage_cart_Detail(data),console.log(data)})
         .catch((error) => {
@@ -151,7 +151,7 @@ const homePage_cart_Detail = (data) => {
         div.classList.add("card", "mb-4");
         div.style.width = '18rem';
 
-        const imageUrl = `https://food-project-9vo4.onrender.com${cart.image}`;
+        const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
 
         div.innerHTML = `
             <img src="${imageUrl}" class="card-img-top" alt="${cart.product_name}">

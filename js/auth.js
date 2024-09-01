@@ -1,7 +1,7 @@
 // userr logout korar function
 const handleLogout = () => {
    const token = localStorage.getItem('token');
-   fetch("https://food-project-9vo4.onrender.com/user/logout/", {
+   fetch("https://final-food-project.onrender.com/user/logout/", {
        method: "POST",
        headers: {
            Authorization: `Token ${token}`,
@@ -51,7 +51,7 @@ window.onload = updateNavBar;
 //    if (password === confirm_password) {
 //        document.getElementById("error").innerText = "";
 //        if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
-//            fetch("https://food-project-9vo4.onrender.com/user/register/", {
+//            fetch("https://final-food-project.onrender.com/user/register/", {
 //                method: "POST",
 //                headers: { "content-type": "application/json" },
 //                body: JSON.stringify(info)
@@ -81,7 +81,7 @@ const handleRegistration = (event) => {
     if (password === confirm_password) {
         document.getElementById("error").innerText = "";
         if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
-            fetch("https://food-project-9vo4.onrender.com/user/register/", {
+            fetch("https://final-food-project.onrender.com/user/register/", {
                 method: "POST",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify(info)
@@ -120,7 +120,7 @@ const handleLogin = (event) => {
    const password = getValue("login-password");
 
    if (username && password) {
-       fetch("https://food-project-9vo4.onrender.com/user/login/", {
+       fetch("https://final-food-project.onrender.com/user/login/", {
            method: "POST",
            headers: { "content-type": "application/json" },
            body: JSON.stringify({ username, password }),
