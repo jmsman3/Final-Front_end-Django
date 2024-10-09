@@ -78,59 +78,6 @@ const isAuthenticated = () => {
 //     });
 // };
 
-const placeOrder = (cartId, event) => {
-    event.preventDefault();
-
-    if (!isAuthenticated()) {
-        alert('Please log in to place an order.');
-        window.location.href = 'login.html';
-        return;
-    }
-
-    const quantity = 1; // Default quantity, or retrieve from user input if needed
-
-    console.log('Placing order with cartId:', cartId);
-    console.log('Token:', localStorage.getItem('token'));
-    console.log({ product: cartId, quantity: quantity });
-
-    fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ product: cartId, quantity: quantity })  // Include quantity
-    })
-    .then(response => {
-        console.log('Response status:', response.status);
-
-        // Check if the response is JSON before parsing
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            return response.json().then(data => ({ response, data }));
-        } else {
-            return { response, data: {} };  // If not JSON, return empty object as data
-        }
-    })
-    .then(({ response, data }) => {
-        console.log(response);
-        console.log(data);
-        if (response.ok) {
-            console.log('Order placed successfully:', data);
-            alert("Order placed successfully");
-
-            // Redirect the user to the order page after successful order placement
-            window.location.href = 'order.html';
-        } else {
-            console.error('Response data:', data);
-            throw new Error(data.error || 'Failed to place order');
-        }
-    })
-    .catch(error => {
-        console.error('Error placing order:', error);
-        alert("There was an issue placing the order. Please try again.");
-    });
-};
 
 const updateOrderItem = (itemId, quantity) => {
     fetch(`https://foodproject-backened-django.vercel.app/order/order_now`, {
@@ -172,6 +119,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+const placeOrder = async (cartId, event) => {
+    event.preventDefault();
+
+    if (!isAuthenticated()) {
+        alert('Please log in to place an order.');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const quantity = 1; // Default quantity, or retrieve from user input if needed
+
+    console.log('Placing order with cartId:', cartId);
+    console.log('Token:', localStorage.getItem('token'));
+    console.log({ product: cartId, quantity: quantity });
+
+    try {
+        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ product: cartId, quantity: quantity })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to place order');
+        }
+
+        const data = await response.json();
+        console.log('Order placed successfully:', data);
+        alert("Order placed successfully");
+
+        // Redirect the user to the order page after successful order placement
+        window.location.href = 'order.html';
+    } catch (error) {
+        console.error('Error placing order:', error);
+        alert("There was an issue placing the order. Please try again.");
+    }
+};
+
 
 const homePageCart = () => {
     console.log('Fetching products...');
@@ -203,29 +192,25 @@ const homePage_cart_Detail = async (data) => {
     parent.innerHTML = '';
 
     let savedCartIds = JSON.parse(localStorage.getItem("SavedCartIds")) || [];
-    console.log("Saved Cart IDs:", savedCartIds); // Log saved cart IDs
+    console.log("Saved Cart IDs:", savedCartIds);
 
-    // Iterate over each cart item
     for (const cart of data.data) {
         const cart_id = cart.id;
-        console.log(`Processing cart item with ID: ${cart_id}`); // Log each cart item's ID
-        
-        // Check if the item is already saved in the cart
+        console.log(`Processing cart item with ID: ${cart_id}`);
+
         if (!savedCartIds.includes(cart_id)) {
             savedCartIds.push(cart_id);
             localStorage.setItem("SavedCartIds", JSON.stringify(savedCartIds));
-            console.log(`Added item ID ${cart_id} to saved cart IDs`); // Log if the item is added
+            console.log(`Added item ID ${cart_id} to saved cart IDs`);
         }
 
         const div = document.createElement("div");
         div.classList.add("card", "mb-4");
         div.style.width = '18rem';
 
-        // Use the image URL directly from the cart data
-        const imageUrl = cart.image; // Assuming this is the ImgBB URL from your backend
-        console.log(`Image URL for ${cart.product_name}: ${imageUrl}`); // Log the image URL
+        const imageUrl = cart.image;
+        console.log(`Image URL for ${cart.product_name}: ${imageUrl}`);
 
-        // Set the inner HTML for the card
         div.innerHTML = `
             <img src="${imageUrl}" class="card-img-top" alt="${cart.product_name}">
             <div class="card-body">
@@ -235,40 +220,39 @@ const homePage_cart_Detail = async (data) => {
                 <p class="card-text"><strong>Price:</strong> $${cart.price}</p>
                 <p class="card-text"><strong>Stock:</strong> ${cart.stock}</p>
                 <p class="card-text"><strong>Discount:</strong> Available</p>
-                
                 <button class="btn btn-primary order-now-btn" data-cart-id="${cart.id}">Order Now</button>
-
                 <button class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</button>
             </div>
         `;
 
         parent.appendChild(div);
-        console.log(`Rendered card for: ${cart.product_name}`); // Log when a card is rendered
+        console.log(`Rendered card for: ${cart.product_name}`);
     }
 
-    // Attach event listeners to "Order Now" buttons
-    document.querySelectorAll('.order-now-btn').forEach(button => {
+    // Add event listeners to all order buttons
+    const orderButtons = document.querySelectorAll('.order-now-btn');
+    orderButtons.forEach(button => {
         button.addEventListener('click', (event) => {
             const cartId = button.getAttribute('data-cart-id');
+            console.log("Order for Cart id", cartId);
             placeOrder(cartId, event);
         });
     });
 
-    // Manage user authentication display
+    // Authentication display management
+    manageAuthenticationDisplay();
+};
+
+// Function to manage authentication display logic
+const manageAuthenticationDisplay = () => {
     if (isAuthenticated()) {
         document.querySelector('main.container.mt-4').style.display = 'block';
-        console.log("User is authenticated, displaying main container"); // Log for authenticated user
+        document.getElementById('display-profile-button').style.display = 'block';
+        console.log("User is authenticated, displaying main container and profile button");
     } else {
         document.querySelector('main.container.mt-4').style.display = 'none';
-        console.log("User is not authenticated, hiding main container"); // Log for unauthenticated user
-    }
-
-    if (isAuthenticated()) {
-        document.getElementById('display-profile-button').style.display = 'block';
-        console.log("Displaying profile button for authenticated user"); // Log for authenticated user
-    } else {
         document.getElementById('display-profile-button').style.display = 'none';
-        console.log("Hiding profile button for unauthenticated user"); // Log for unauthenticated user
+        console.log("User is not authenticated, hiding main container and profile button");
     }
 };
 
