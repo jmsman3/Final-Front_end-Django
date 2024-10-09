@@ -16,7 +16,7 @@ const isAuthenticated = () => {
 //         return;
 //     }
 
-//     fetch(`http://127.0.0.1:8000/order/order_now`, {
+//     fetch(`https://foodproject-backened-django.vercel.app/order/order_now`, {
 //         method: 'POST',
 //         headers: {
 //             'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const isAuthenticated = () => {
 //     console.log('Placing order with cartId:', cartId);
 //     console.log('Token:', localStorage.getItem('token'));
 
-//     fetch('http://127.0.0.1:8000/order/order_now', {
+//     fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
 //         method: 'POST',
 //         headers: {
 //             'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const placeOrder = (cartId, event) => {
     console.log('Token:', localStorage.getItem('token'));
     console.log({ product: cartId, quantity: quantity });
 
-    fetch('https://final-food-project.onrender.com/order/order_now', {
+    fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const placeOrder = (cartId, event) => {
 
 const homePageCart = () => {
     console.log('acdddddddd')
-    fetch("https://final-food-project.onrender.com/menu/products/")
+    fetch("https://foodproject-backened-django.vercel.app/menu/products/")
         .then(res => res.json())
         .then((data) => {homePage_cart_Detail(data),console.log(data)})
         .catch((error) => {
@@ -154,7 +154,8 @@ const homePage_cart_Detail = (data) => {
         div.classList.add("card", "mb-4");
         div.style.width = '18rem';
 
-        const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
+        // const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
+        const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
 
         div.innerHTML = `
             <img src="${imageUrl}" class="card-img-top" alt="${cart.product_name}">

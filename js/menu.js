@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function loadFoodItemsByCategory(categoryId) {
     console.log('Category ID:', categoryId);
 
-    fetch(`https://final-food-project.onrender.com/menu/products/?category_id=${categoryId}`)
+    fetch(`https://foodproject-backened-django.vercel.app/menu/products/?category_id=${categoryId}`)
         .then(response => {
             console.log('Response Status:', response.status); // Check the status code
             return response.json();
@@ -30,7 +30,7 @@ function loadFoodItemsByCategory(categoryId) {
                     foodItemDiv.classList.add("card", "m-3");  // Add margin to create space between cards
                     foodItemDiv.style.width = '18rem'; // Adjust card width to match
 
-                    const imageUrl = `https://final-food-project.onrender.com${item.image}`;
+                    const imageUrl = `https://foodproject-backened-django.vercel.app${item.image}`;
                     // Construct the content (image, title, price, description)
                     foodItemDiv.innerHTML = `
                     

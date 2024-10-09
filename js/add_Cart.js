@@ -31,3 +31,4 @@ const handle_AddToCart = (name, price, stock, category_name, cart_id, event) => 
 };
 
 homePageCart();
+// https://foodproject-backened-django.vercel.app/

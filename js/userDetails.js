@@ -12,7 +12,7 @@ const loadUserDetails = () => {
       console.error('No user_id found in localStorage.');
       return;
   }
-  fetch(`https://final-food-project.onrender.com/user/user_details/${user_id}/`)
+  fetch(`https://foodproject-backened-django.vercel.app/user/user_details/${user_id}/`)
     .then((res) => {  return res.json(); })
     .then((data) => {
         userDetailsFull(data);

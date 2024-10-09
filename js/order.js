@@ -6,7 +6,7 @@
 //     }
 //     tbody.innerHTML = '';
 //     try {
-//         const response = await fetch('http://127.0.0.1:8000/order/order_now', {
+//         const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
 //             method: 'GET',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -20,7 +20,7 @@
          
 //         orders.forEach(order => {
 //             const row = document.createElement('tr');
-//             const imageUrl = `http://127.0.0.1:8000${order.product.image}`;
+//             const imageUrl = `https://foodproject-backened-django.vercel.app${order.product.image}`;
 //             row.innerHTML = `
 //                 <td>
 //                     <img src="${imageUrl || 'default-image.jpg'}" alt="${order.product.product_name}" style="width: 50px; height: auto;">
@@ -68,7 +68,7 @@ const displayOrderHistory = async () => {
     }
 
     try {
-        const response = await fetch('https://final-food-project.onrender.com/order/order_now', {
+        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const displayOrderHistory = async () => {
 
         orders.forEach(order => {
             const row = document.createElement('tr');
-            const imageUrl = `https://final-food-project.onrender.com${order.product.image}`;
+            const imageUrl = `https://foodproject-backened-django.vercel.app${order.product.image}`;
             row.innerHTML = `
                 <td>
                     <img src="${imageUrl || 'default-image.jpg'}" alt="${order.product.product_name}" style="width: 50px; height: auto;">
