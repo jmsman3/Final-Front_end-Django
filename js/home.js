@@ -154,32 +154,29 @@ const placeOrder = async (cartId, event) => {
         alert("Order placed successfully");
 
         // Redirect the user to the order page after successful order placement
-        window.location.href = 'order.html';
+        window.location.href = 'order.html?cart_id=' + cartId; // Pass cart ID to order page
     } catch (error) {
         console.error('Error placing order:', error);
         alert("There was an issue placing the order. Please try again.");
     }
 };
 
-
 const homePageCart = () => {
     console.log('Fetching products...');
     fetch("https://foodproject-backened-django.vercel.app/menu/products/", {
-        method: 'GET', // Specify the GET method
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json', // Set the Content-Type to JSON
-            // You can add other headers if needed
+            'Content-Type': 'application/json',
         },
-       
     })
         .then(res => {
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
-            return res.json(); // Parse the JSON response
+            return res.json();
         })
         .then((data) => {
-            console.log("Fetched product data:", data); // Log the fetched product data
+            console.log("Fetched product data:", data);
             homePage_cart_Detail(data);
         })
         .catch((error) => {
@@ -243,6 +240,10 @@ const homePage_cart_Detail = async (data) => {
     manageAuthenticationDisplay();
 };
 
+// Call the homePageCart function to fetch products on page load
+document.addEventListener("DOMContentLoaded", homePageCart);
+
+
 // Function to manage authentication display logic
 const manageAuthenticationDisplay = () => {
     if (isAuthenticated()) {
@@ -256,9 +257,6 @@ const manageAuthenticationDisplay = () => {
     }
 };
 
-
-// Call the homePageCart function to fetch products on page load
-document.addEventListener("DOMContentLoaded", homePageCart);
 
 
 const handle_AddToCart = (id, name, price, stock, category_name, image, event) => {
