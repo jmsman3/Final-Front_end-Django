@@ -135,13 +135,16 @@ const placeOrder = async (cartId, event) => {
     console.log({ product: cartId, quantity: quantity });
 
     try {
-        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
+        const body = { product: cartId, quantity: quantity }; // Create the body object first
+        console.log(body); // Log the body before sending it
+
+        const response = await fetch('https://foodproject-backend-django.vercel.app/order/order_now', { // Fixed typo here
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Token ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify({ product: cartId, quantity: quantity })
+            body: JSON.stringify(body) // Convert the body to JSON string
         });
 
         if (!response.ok) {
@@ -154,7 +157,7 @@ const placeOrder = async (cartId, event) => {
         alert("Order placed successfully");
 
         // Redirect the user to the order page after successful order placement
-        window.location.href = 'order.html?cart_id=' + cartId; // Pass cart ID to order page
+        window.location.href = `order.html?cart_id=${cartId}`; // Pass cart ID to order page
     } catch (error) {
         console.error('Error placing order:', error);
         alert("There was an issue placing the order. Please try again.");
