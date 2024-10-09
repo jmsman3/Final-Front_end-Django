@@ -79,47 +79,7 @@ const isAuthenticated = () => {
 // };
 
 
-const updateOrderItem = (itemId, quantity) => {
-    fetch(`https://foodproject-backened-django.vercel.app/order/order_now`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ id: itemId, quantity: quantity })  // Include updated quantity
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to update order item');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Order item updated successfully:', data);
-        alert("Order item updated successfully");
-        // Optionally, refresh or update the displayed order items
-    })
-    .catch(error => {
-        console.error('Error updating order item:', error);
-        alert("There was an issue updating the order item. Please try again.");
-    });
-};
-
-// Attach event listener for updating order item quantity
-document.addEventListener('DOMContentLoaded', () => {
-    const updateButtons = document.querySelectorAll('.update-order-item-btn');
-    updateButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const itemId = button.getAttribute('data-item-id');
-            const newQuantity = prompt('Enter new quantity:', '1');
-            if (newQuantity) {
-                updateOrderItem(itemId, newQuantity);
-            }
-        });
-    });
-});
-
-const placeOrder = async (cartId, event) => {
+const placeOrder = (cartId, event) => {
     event.preventDefault();
 
     if (!isAuthenticated()) {
@@ -134,82 +94,68 @@ const placeOrder = async (cartId, event) => {
     console.log('Token:', localStorage.getItem('token'));
     console.log({ product: cartId, quantity: quantity });
 
-    try {
-        const body = { product: cartId, quantity: quantity }; // Create the body object first
-        console.log(body); // Log the body before sending it
-
-        const response = await fetch('https://foodproject-backend-django.vercel.app/order/order_now', { // Fixed typo here
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify(body) // Convert the body to JSON string
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to place order');
-        }
-
-        const data = await response.json();
-        console.log('Order placed successfully:', data);
-        alert("Order placed successfully");
-
-        // Redirect the user to the order page after successful order placement
-        window.location.href = `order.html?cart_id=${cartId}`; // Pass cart ID to order page
-    } catch (error) {
-        console.error('Error placing order:', error);
-        alert("There was an issue placing the order. Please try again.");
-    }
-};
-
-const homePageCart = () => {
-    console.log('Fetching products...');
-    fetch("https://foodproject-backened-django.vercel.app/menu/products/", {
-        method: 'GET',
+    fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('token')}`
         },
+        body: JSON.stringify({ product: cartId, quantity: quantity })  // Include quantity
     })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return res.json();
-        })
-        .then((data) => {
-            console.log("Fetched product data:", data);
-            homePage_cart_Detail(data);
-        })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json().then(data => ({ response, data }));
+    })
+    .then(({ response, data }) => {
+        console.log(response);
+        console.log(data);
+        if (response.ok) {
+            console.log('Order placed successfully:', data);
+            window.location.href = 'order.html';
+        } else {
+            console.error('Response data:', data);
+            throw new Error('Failed to place order');
+        }
+    })
+    .catch(error => {
+        console.error('Error placing order:', error);
+    });
+};
+
+
+
+const homePageCart = () => {
+    console.log('acdddddddd')
+    fetch("https://foodproject-backened-django.vercel.app/menu/products/")
+        .then(res => res.json())
+        .then((data) => {homePage_cart_Detail(data),console.log(data)})
         .catch((error) => {
             console.log("Error fetching data:", error);
         });
 };
 
-const homePage_cart_Detail = async (data) => {
+
+
+const homePage_cart_Detail = (data) => {
+    // console.log("Full Product detail:", data);
     const parent = document.getElementById("home_Cart_Show");
     parent.innerHTML = '';
 
     let savedCartIds = JSON.parse(localStorage.getItem("SavedCartIds")) || [];
-    console.log("Saved Cart IDs:", savedCartIds);
 
-    for (const cart of data.data) {
+    data.data.forEach((cart) => {
         const cart_id = cart.id;
-        console.log(`Processing cart item with ID: ${cart_id}`);
-
         if (!savedCartIds.includes(cart_id)) {
             savedCartIds.push(cart_id);
             localStorage.setItem("SavedCartIds", JSON.stringify(savedCartIds));
-            console.log(`Added item ID ${cart_id} to saved cart IDs`);
         }
-
+        
         const div = document.createElement("div");
         div.classList.add("card", "mb-4");
         div.style.width = '18rem';
 
-        const imageUrl = cart.image;
-        console.log(`Image URL for ${cart.product_name}: ${imageUrl}`);
+        // const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
+        const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
 
         div.innerHTML = `
             <img src="${imageUrl}" class="card-img-top" alt="${cart.product_name}">
@@ -217,49 +163,31 @@ const homePage_cart_Detail = async (data) => {
                 <h5 class="card-title">Food name: ${cart.product_name}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Category: ${cart.category.category_name}</h6>
                 <p class="card-text">Description: ${cart.description.slice(0, 30)}...</p>
-                <p class="card-text"><strong>Price:</strong> $${cart.price}</p>
+                <p class="card-text"><strong>Price:</strong>${cart.price}</p>
+              
                 <p class="card-text"><strong>Stock:</strong> ${cart.stock}</p>
                 <p class="card-text"><strong>Discount:</strong> Available</p>
-                <button class="btn btn-primary order-now-btn" data-cart-id="${cart.id}">Order Now</button>
-                <button class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</button>
+                <a href="#" class="btn btn-primary" onclick="placeOrder('${cart.id}', event)">Order Now</a>
+
+
+                <a href="#" class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</a>
             </div>
         `;
-
         parent.appendChild(div);
-        console.log(`Rendered card for: ${cart.product_name}`);
-    }
-
-    // Add event listeners to all order buttons
-    const orderButtons = document.querySelectorAll('.order-now-btn');
-    orderButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const cartId = button.getAttribute('data-cart-id');
-            console.log("Order for Cart id", cartId);
-            placeOrder(cartId, event);
-        });
     });
 
-    // Authentication display management
-    manageAuthenticationDisplay();
-};
-
-// Call the homePageCart function to fetch products on page load
-document.addEventListener("DOMContentLoaded", homePageCart);
-
-
-// Function to manage authentication display logic
-const manageAuthenticationDisplay = () => {
     if (isAuthenticated()) {
         document.querySelector('main.container.mt-4').style.display = 'block';
-        document.getElementById('display-profile-button').style.display = 'block';
-        console.log("User is authenticated, displaying main container and profile button");
     } else {
         document.querySelector('main.container.mt-4').style.display = 'none';
+    }
+
+    if (isAuthenticated()) {
+        document.getElementById('display-profile-button').style.display = 'block';
+    } else {
         document.getElementById('display-profile-button').style.display = 'none';
-        console.log("User is not authenticated, hiding main container and profile button");
     }
 };
-
 
 
 const handle_AddToCart = (id, name, price, stock, category_name, image, event) => {
