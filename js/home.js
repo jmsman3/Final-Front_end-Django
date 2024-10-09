@@ -111,6 +111,9 @@ const placeOrder = (cartId, event) => {
         console.log(data);
         if (response.ok) {
             console.log('Order placed successfully:', data);
+            alert("Order placed successfully");
+
+            // Redirect the user to the order page after successful order placement
             window.location.href = 'order.html';
         } else {
             console.error('Response data:', data);
@@ -119,8 +122,10 @@ const placeOrder = (cartId, event) => {
     })
     .catch(error => {
         console.error('Error placing order:', error);
+        alert("There was an issue placing the order. Please try again.");
     });
 };
+
 
 const homePageCart = () => {
     console.log('Fetching products...');
@@ -171,7 +176,6 @@ const homePage_cart_Detail = async (data) => {
         div.style.width = '18rem';
 
         // Use the image URL directly from the cart data
-        
         const imageUrl = cart.image; // Assuming this is the ImgBB URL from your backend
         console.log(`Image URL for ${cart.product_name}: ${imageUrl}`); // Log the image URL
 
@@ -185,14 +189,24 @@ const homePage_cart_Detail = async (data) => {
                 <p class="card-text"><strong>Price:</strong> $${cart.price}</p>
                 <p class="card-text"><strong>Stock:</strong> ${cart.stock}</p>
                 <p class="card-text"><strong>Discount:</strong> Available</p>
-                <a href="#" class="btn btn-primary" onclick="placeOrder('${cart.id}', event)">Order Now</a>
-                <a href="#" class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</a>
+                
+                <button class="btn btn-primary order-now-btn" data-cart-id="${cart.id}">Order Now</button>
+
+                <button class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</button>
             </div>
         `;
-        
+
         parent.appendChild(div);
         console.log(`Rendered card for: ${cart.product_name}`); // Log when a card is rendered
     }
+
+    // Attach event listeners to "Order Now" buttons
+    document.querySelectorAll('.order-now-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const cartId = button.getAttribute('data-cart-id');
+            placeOrder(cartId, event);
+        });
+    });
 
     // Manage user authentication display
     if (isAuthenticated()) {
@@ -211,6 +225,7 @@ const homePage_cart_Detail = async (data) => {
         console.log("Hiding profile button for unauthenticated user"); // Log for unauthenticated user
     }
 };
+
 
 // Call the homePageCart function to fetch products on page load
 document.addEventListener("DOMContentLoaded", homePageCart);
