@@ -78,7 +78,6 @@ const isAuthenticated = () => {
 //     });
 // };
 
-
 const placeOrder = (cartId, event) => {
     event.preventDefault();
 
@@ -104,7 +103,14 @@ const placeOrder = (cartId, event) => {
     })
     .then(response => {
         console.log('Response status:', response.status);
-        return response.json().then(data => ({ response, data }));
+
+        // Check if the response is JSON before parsing
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return response.json().then(data => ({ response, data }));
+        } else {
+            return { response, data: {} };  // If not JSON, return empty object as data
+        }
     })
     .then(({ response, data }) => {
         console.log(response);
