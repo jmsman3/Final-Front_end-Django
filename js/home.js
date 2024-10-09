@@ -123,7 +123,7 @@ const placeOrder = (cartId, event) => {
             window.location.href = 'order.html';
         } else {
             console.error('Response data:', data);
-            throw new Error('Failed to place order');
+            throw new Error(data.error || 'Failed to place order');
         }
     })
     .catch(error => {
@@ -131,6 +131,46 @@ const placeOrder = (cartId, event) => {
         alert("There was an issue placing the order. Please try again.");
     });
 };
+
+const updateOrderItem = (itemId, quantity) => {
+    fetch(`https://foodproject-backened-django.vercel.app/order/order_now`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ id: itemId, quantity: quantity })  // Include updated quantity
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to update order item');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Order item updated successfully:', data);
+        alert("Order item updated successfully");
+        // Optionally, refresh or update the displayed order items
+    })
+    .catch(error => {
+        console.error('Error updating order item:', error);
+        alert("There was an issue updating the order item. Please try again.");
+    });
+};
+
+// Attach event listener for updating order item quantity
+document.addEventListener('DOMContentLoaded', () => {
+    const updateButtons = document.querySelectorAll('.update-order-item-btn');
+    updateButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const itemId = button.getAttribute('data-item-id');
+            const newQuantity = prompt('Enter new quantity:', '1');
+            if (newQuantity) {
+                updateOrderItem(itemId, newQuantity);
+            }
+        });
+    });
+});
 
 
 const homePageCart = () => {
