@@ -12,6 +12,7 @@ const handleLogout = () => {
    .then(() => {
        localStorage.removeItem("token");
        localStorage.removeItem("user_id");
+       alert("Logout Successfull...");
        window.location.href = "home.html";
        updateNavBar();
    });
@@ -131,6 +132,7 @@ const handleLogin = (event) => {
            if (data.token && data.user_id) {
                localStorage.setItem("token", data.token);
                localStorage.setItem("user_id", data.user_id);
+               alert("Login Successful,Go to Home Page");
                window.location.href = "home.html";
                updateNavBar();
            }

@@ -129,7 +129,8 @@ const homePageCart = () => {
         headers: {
             'Content-Type': 'application/json', // Set the Content-Type to JSON
             // You can add other headers if needed
-        }
+        },
+       
     })
         .then(res => {
             if (!res.ok) {
@@ -170,6 +171,7 @@ const homePage_cart_Detail = async (data) => {
         div.style.width = '18rem';
 
         // Use the image URL directly from the cart data
+        
         const imageUrl = cart.image; // Assuming this is the ImgBB URL from your backend
         console.log(`Image URL for ${cart.product_name}: ${imageUrl}`); // Log the image URL
 
