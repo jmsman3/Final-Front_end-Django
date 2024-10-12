@@ -5,14 +5,17 @@ const isAuthenticated = () => {
 
 // Place Order function
 const placeOrder = (cartId, event) => {
-    event.preventDefault();
+    event.preventDefault();  // Prevent default behavior of the button
 
+    // Check if the user is authenticated
     if (!isAuthenticated()) {
+        // If not authenticated, show an alert and redirect to the login page
         alert('Please log in to place an order.');
-        window.location.href = 'login.html';
+        window.location.href = 'login.html';  // Redirect to the login page
         return;
     }
 
+    // If authenticated, proceed to place the order
     console.log('Placing order with cartId:', cartId);
     console.log('Token:', localStorage.getItem('token'));
 
@@ -20,9 +23,9 @@ const placeOrder = (cartId, event) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${localStorage.getItem('token')}`
+            'Authorization': `Token ${localStorage.getItem('token')}`  // Add authorization header
         },
-        body: JSON.stringify({ product: cartId })
+        body: JSON.stringify({ product: cartId })  // Send cartId in the request body
     })
     .then(response => {
         console.log('Response status:', response.status);
@@ -30,8 +33,9 @@ const placeOrder = (cartId, event) => {
     })
     .then(({ response, data }) => {
         if (response.ok) {
+            // On successful order, redirect to order confirmation or history page
             console.log('Order placed successfully:', data);
-            window.location.href = 'order.html'; // Navigate to order history or confirmation page
+            window.location.href = 'order.html';
         } else {
             console.error('Error response data:', data);
             alert('Failed to place order. Please try again.');
@@ -43,22 +47,22 @@ const placeOrder = (cartId, event) => {
     });
 };
 
-// Function to load homepage cart details
+
 const homePageCart = () => {
-    console.log('Loading homepage cart');
+    console.log('acdddddddd')
     fetch("https://foodproject-backened-django.vercel.app/menu/products/")
+    // fetch("http://127.0.0.1:8000/menu/products/")
         .then(res => res.json())
-        .then((data) => {
-            homePage_cart_Detail(data);
-            console.log('Cart data:', data);
-        })
+        .then((data) => {homePage_cart_Detail(data),console.log(data)})
         .catch((error) => {
-            console.log("Error fetching cart data:", error);
+            console.log("Error fetching data:", error);
         });
 };
 
-// Function to render cart details on homepage
+
+
 const homePage_cart_Detail = (data) => {
+    // console.log("Full Product detail:", data);
     const parent = document.getElementById("home_Cart_Show");
     parent.innerHTML = '';
 
@@ -75,6 +79,9 @@ const homePage_cart_Detail = (data) => {
         div.classList.add("card", "mb-4");
         div.style.width = '18rem';
 
+        // const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
+        // const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
+        
         const imageUrl = `${cart.image}`;
         console.log(imageUrl);
 
@@ -84,27 +91,29 @@ const homePage_cart_Detail = (data) => {
                 <h5 class="card-title">Food name: ${cart.product_name}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Category: ${cart.category.category_name}</h6>
                 <p class="card-text">Description: ${cart.description.slice(0, 30)}...</p>
-                <p class="card-text"><strong>Price:</strong> ${cart.price}</p>
+                <p class="card-text"><strong>Price:</strong>${cart.price}</p>
+              
                 <p class="card-text"><strong>Stock:</strong> ${cart.stock}</p>
                 <p class="card-text"><strong>Discount:</strong> Available</p>
                 <a href="#" class="btn btn-primary" onclick="placeOrder('${cart.id}', event)">Order Now</a>
+
+
                 <a href="#" class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</a>
             </div>
         `;
         parent.appendChild(div);
     });
 
-    // Toggle elements visibility based on authentication
     if (isAuthenticated()) {
         document.querySelector('main.container.mt-4').style.display = 'block';
-        document.getElementById('display-profile-button').style.display = 'block';
-        document.getElementById('login-link').style.display = 'none';
-        document.getElementById('logout-link').style.display = 'block';
     } else {
         document.querySelector('main.container.mt-4').style.display = 'none';
+    }
+
+    if (isAuthenticated()) {
+        document.getElementById('display-profile-button').style.display = 'block';
+    } else {
         document.getElementById('display-profile-button').style.display = 'none';
-        document.getElementById('login-link').style.display = 'block';
-        document.getElementById('logout-link').style.display = 'none';
     }
 };
 
