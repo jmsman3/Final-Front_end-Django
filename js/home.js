@@ -156,8 +156,11 @@ const homePage_cart_Detail = (data) => {
 
         // const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
         // const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
-        const imageUrl = `${cart.image}`;
+        // Fix the image URL by correcting the domain
+        const imageUrl = cart.image.replace('i.ibb.co.com', 'i.ibb.co');
         console.log(imageUrl);
+        // const imageUrl = `${cart.image}`;
+        // console.log(imageUrl);
 
         div.innerHTML = `
             <img src="${imageUrl}" class="card-img-top" alt="${cart.product_name}">
