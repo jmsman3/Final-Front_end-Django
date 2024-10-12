@@ -35,7 +35,7 @@ const placeOrder = (cartId, event) => {
         if (response.ok) {
             // On successful order, redirect to order confirmation or history page
             console.log('Order placed successfully:', data);
-            window.location.href = `order.html${cartId}`;
+            window.location.href = 'order.html';
         } else {
             console.error('Error response data:', data);
             alert('Failed to place order. Please try again.');

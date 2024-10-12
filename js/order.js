@@ -88,13 +88,8 @@ const displayOrderHistory = async () => {
         return; // Exit the function
     }
 
-    // Extract cartId from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const cartId = urlParams.get('cartId'); // Assuming cartId is the query parameter name
-
     try {
-        // Fetch order history, optionally passing cartId if available
-        const response = await fetch(`https://foodproject-backened-django.vercel.app/order/order_now${cartId ? `?cartId=${cartId}` : ''}`, {
+        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -107,22 +102,29 @@ const displayOrderHistory = async () => {
         }
 
         const orders = await response.json();
-
+        
+        // Assuming orders returned from API includes cartId that maps to the products
         orders.forEach(order => {
-            console.log(order);
-            const row = document.createElement('tr');
-            const imageUrl = `https://foodproject-backened-django.vercel.app${order.product.image}`;
-            row.innerHTML = `
-                <td>
-                    <img src="${imageUrl || 'default-image.jpg'}" alt="${order.product.product_name}" style="width: 50px; height: auto;">
-                    ${order.product.product_name}
-                </td>
-                <td>$${order.price.toFixed(2)}</td>
-                <td>${order.quantity}</td>
-                <td>$${(order.price * order.quantity).toFixed(2)}</td>
-                <td>${order.order.delivery_status}</td>
-            `;
-            tbody.appendChild(row);
+            // Find the product based on the cartId or id in the order
+            const product = data.data.find(product => product.id === order.product_id); // Assuming order has product_id
+
+            if (product) {
+                const row = document.createElement('tr');
+                const imageUrl = product.image; // Get image from product
+                row.innerHTML = `
+                    <td>
+                        <img src="${imageUrl || 'default-image.jpg'}" alt="${product.product_name}" style="width: 50px; height: auto;">
+                        ${product.product_name}
+                    </td>
+                    <td>$${parseFloat(product.price).toFixed(2)}</td>  <!-- Display price correctly -->
+                    <td>${order.quantity}</td>
+                    <td>$${(parseFloat(product.price) * order.quantity).toFixed(2)}</td>
+                    <td>${order.order.delivery_status}</td>
+                `;
+                tbody.appendChild(row);
+            } else {
+                console.warn(`Product not found for order ID: ${order.product_id}`);
+            }
         });
 
     } catch (error) {
