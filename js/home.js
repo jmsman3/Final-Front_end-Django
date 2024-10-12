@@ -19,7 +19,7 @@ const placeOrder = (cartId, event) => {
     console.log('Placing order with cartId:', cartId);
     console.log('Token:', localStorage.getItem('token'));
 
-    fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
+    fetch('https://foodproject-backened-django.vercel.app/order/order_now/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

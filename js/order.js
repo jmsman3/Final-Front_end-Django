@@ -89,7 +89,7 @@ const displayOrderHistory = async () => {
     }
 
     try {
-        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
+        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
