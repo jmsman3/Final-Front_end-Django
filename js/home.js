@@ -155,7 +155,9 @@ const homePage_cart_Detail = (data) => {
         div.style.width = '18rem';
 
         // const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
-        const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
+        // const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
+        const imageUrl = `${cart.image}`;
+        console.log(imageUrl);
 
         div.innerHTML = `
             <img src="${imageUrl}" class="card-img-top" alt="${cart.product_name}">
