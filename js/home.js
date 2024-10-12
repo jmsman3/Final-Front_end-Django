@@ -1,84 +1,9 @@
-// Token ta check kori
+// Token check function
 const isAuthenticated = () => {
     return !!localStorage.getItem('token'); 
 };
 
-
-// const placeOrder = (cartId, event) => {
-//     console.log('Sending request with cartId:', cartId);
-// console.log('Token:', localStorage.getItem('token'));
-
-//     event.preventDefault();
-
-//     if (!isAuthenticated()) {
-//         alert('Please log in to place an order.');
-//         window.location.href = 'login.html';
-//         return;
-//     }
-
-//     fetch(`https://foodproject-backened-django.vercel.app/order/order_now`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Token ${localStorage.getItem('token')}`
-//         },
-//         body: JSON.stringify({ cart_id: cartId })
-//     })
-//     .then(response => {
-//         if (response.ok) {
-//             return response.json();
-//         } else {
-//             throw new Error('Failed to place order');
-//         }
-//     })
-//     .then(data => {
-//         console.log('Order placed successfully:', data);
-//         window.location.href = 'order.html';  // Redirect korlam history page
-//     })
-//     .catch(error => {
-//         console.error('Error placing order:', error);
-//     });
-// };
-
-// const placeOrder = (cartId, event) => {
-//     event.preventDefault();
-
-//     if (!isAuthenticated()) {
-//         alert('Please log in to place an order.');
-//         window.location.href = 'login.html';
-//         return;
-//     }
-
-//     console.log('Placing order with cartId:', cartId);
-//     console.log('Token:', localStorage.getItem('token'));
-
-//     fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Token ${localStorage.getItem('token')}`
-//         },
-//         body: JSON.stringify({ product : cartId })
-//     })
-//     .then(response => {
-//         console.log('Response status:', response.status);
-//         return response.json().then(data => ({ response, data }));
-//     })
-//     .then(({ response, data }) => {
-//         if (response.ok) {
-//             console.log('Order placed successfully:', data);
-//             window.location.href = 'order.html';
-//         } else {
-//             console.error('Response data:', data);
-//             throw new Error('Failed to place order');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error placing order:', error);
-//     });
-// };
-
-
+// Place Order function
 const placeOrder = (cartId, event) => {
     event.preventDefault();
 
@@ -88,11 +13,8 @@ const placeOrder = (cartId, event) => {
         return;
     }
 
-    const quantity = 1; // Default quantity, or retrieve from user input if needed
-
     console.log('Placing order with cartId:', cartId);
     console.log('Token:', localStorage.getItem('token'));
-    console.log({ product: cartId, quantity: quantity });
 
     fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
         method: 'POST',
@@ -100,44 +22,43 @@ const placeOrder = (cartId, event) => {
             'Content-Type': 'application/json',
             'Authorization': `Token ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ product: cartId, quantity: quantity })  // Include quantity
+        body: JSON.stringify({ product: cartId })
     })
     .then(response => {
         console.log('Response status:', response.status);
         return response.json().then(data => ({ response, data }));
     })
     .then(({ response, data }) => {
-        console.log(response);
-        console.log(data);
         if (response.ok) {
             console.log('Order placed successfully:', data);
-            window.location.href = 'order.html';
+            window.location.href = 'order.html'; // Navigate to order history or confirmation page
         } else {
-            console.error('Response data:', data);
-            throw new Error('Failed to place order');
+            console.error('Error response data:', data);
+            alert('Failed to place order. Please try again.');
         }
     })
     .catch(error => {
         console.error('Error placing order:', error);
+        alert('There was an issue placing your order. Please try again.');
     });
 };
 
-
-
+// Function to load homepage cart details
 const homePageCart = () => {
-    console.log('acdddddddd')
+    console.log('Loading homepage cart');
     fetch("https://foodproject-backened-django.vercel.app/menu/products/")
         .then(res => res.json())
-        .then((data) => {homePage_cart_Detail(data),console.log(data)})
+        .then((data) => {
+            homePage_cart_Detail(data);
+            console.log('Cart data:', data);
+        })
         .catch((error) => {
-            console.log("Error fetching data:", error);
+            console.log("Error fetching cart data:", error);
         });
 };
 
-
-
+// Function to render cart details on homepage
 const homePage_cart_Detail = (data) => {
-    // console.log("Full Product detail:", data);
     const parent = document.getElementById("home_Cart_Show");
     parent.innerHTML = '';
 
@@ -154,13 +75,8 @@ const homePage_cart_Detail = (data) => {
         div.classList.add("card", "mb-4");
         div.style.width = '18rem';
 
-        // const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
-        // const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
-        // Fix the image URL by correcting the domain
-        const imageUrl = cart.image.replace('i.ibb.co.com', 'i.ibb.co');
+        const imageUrl = `${cart.image}`;
         console.log(imageUrl);
-        // const imageUrl = `${cart.image}`;
-        // console.log(imageUrl);
 
         div.innerHTML = `
             <img src="${imageUrl}" class="card-img-top" alt="${cart.product_name}">
@@ -168,29 +84,27 @@ const homePage_cart_Detail = (data) => {
                 <h5 class="card-title">Food name: ${cart.product_name}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Category: ${cart.category.category_name}</h6>
                 <p class="card-text">Description: ${cart.description.slice(0, 30)}...</p>
-                <p class="card-text"><strong>Price:</strong>${cart.price}</p>
-              
+                <p class="card-text"><strong>Price:</strong> ${cart.price}</p>
                 <p class="card-text"><strong>Stock:</strong> ${cart.stock}</p>
                 <p class="card-text"><strong>Discount:</strong> Available</p>
                 <a href="#" class="btn btn-primary" onclick="placeOrder('${cart.id}', event)">Order Now</a>
-
-
                 <a href="#" class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</a>
             </div>
         `;
         parent.appendChild(div);
     });
 
+    // Toggle elements visibility based on authentication
     if (isAuthenticated()) {
         document.querySelector('main.container.mt-4').style.display = 'block';
+        document.getElementById('display-profile-button').style.display = 'block';
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'block';
     } else {
         document.querySelector('main.container.mt-4').style.display = 'none';
-    }
-
-    if (isAuthenticated()) {
-        document.getElementById('display-profile-button').style.display = 'block';
-    } else {
         document.getElementById('display-profile-button').style.display = 'none';
+        document.getElementById('login-link').style.display = 'block';
+        document.getElementById('logout-link').style.display = 'none';
     }
 };
 
