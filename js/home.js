@@ -25,7 +25,7 @@ const placeOrder = (cartId, event) => {
             'Content-Type': 'application/json',
             'Authorization': `Token ${localStorage.getItem('token')}`  // Add authorization header
         },
-        body: JSON.stringify({ product: cartId })  // Send cartId in the request body
+        body: JSON.stringify({cartId})  // Send cartId in the request body
     })
     .then(response => {
         console.log('Response status:', response.status);
