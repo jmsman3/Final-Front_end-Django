@@ -469,3 +469,44 @@ button {
 
 
 /* ---------------------------Order----------------------- */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.navbar-custom {
+  background-color: #f8f9fa; /* Light background for the navbar */
+}
+
+.btn-custom {
+  color: #007bff;
+}
+
+.menu-header {
+  color: red;
+  font-weight: bold;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+footer {
+  background-color: #aaaaaa;
+  padding: 50px;
+  color: white;
+}
+
+footer img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .social-icons {
+      justify-content: center;
+  }
+  .part3 {
+      margin-top: 20px;
+  }
+}
