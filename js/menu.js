@@ -110,7 +110,7 @@ function loadFoodItemsByCategory(categoryId) {
                             <h5 class="card-title">${item.product_name}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">
                                 Category: ${item.category.category_name}
-                                <img src="${categoryImageUrl}" alt="${item.category.category_name} Image" style="width: 30px; height: 30px; margin-left: 5px;" />
+                                <img src="" alt="${item.category.category_name} Image" style="width: 30px; height: 30px; margin-left: 5px;" />
                             </h6>
                             <p class="card-text">Description: ${item.description}</p>
                             <p class="card-text"><strong>Price:</strong> $${item.price}</p>
