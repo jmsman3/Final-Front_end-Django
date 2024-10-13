@@ -3,9 +3,11 @@ const isAuthenticated = () => {
     return !!localStorage.getItem('token'); 
 };
 
-// Place Order function
+
+
+// Function to place an order
 const placeOrder = (productId, event) => {
-    event.preventDefault();  // Prevent default behavior of the button
+    event.preventDefault();  // Prevent default button behavior
 
     if (!isAuthenticated()) {
         alert('Please log in to place an order.');
@@ -13,16 +15,26 @@ const placeOrder = (productId, event) => {
         return;
     }
 
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Error: Authentication token not found. Please log in again.');
+        window.location.href = 'login.html';
+        return;
+    }
+
     console.log('Placing order with productId:', productId);
-    console.log('Token:', localStorage.getItem('token'));
+    console.log('Token:', token);
 
     fetch('https://foodproject-backened-django.vercel.app/order/order_now/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${localStorage.getItem('token')}`
+            'Authorization': `Token ${token}`
         },
-        body: JSON.stringify({ product: productId, quantity: 1 })  // Send the correct product ID
+        body: JSON.stringify({
+            product: parseInt(productId),  // Ensure the product ID is an integer
+            quantity: 1  // Default quantity to 1, you can modify this as needed
+        })
     })
     .then(response => {
         console.log('Response status:', response.status);
@@ -31,10 +43,11 @@ const placeOrder = (productId, event) => {
     .then(({ response, data }) => {
         if (response.ok) {
             console.log('Order placed successfully:', data);
-            window.location.href = 'order.html';
+            alert('Order placed successfully!');
+            window.location.href = 'order.html';  // Redirect to the order page
         } else {
             console.error('Error response data:', data);
-            alert('Failed to place order. Please try again.');
+            alert(`Failed to place order: ${data.error || 'Please try again.'}`);
         }
     })
     .catch(error => {
@@ -43,25 +56,26 @@ const placeOrder = (productId, event) => {
     });
 };
 
-
-
+// Function to load products for the home page
 const homePageCart = () => {
-    console.log('acdddddddd')
+    console.log('Fetching products for home page...');
+    
     fetch("https://foodproject-backened-django.vercel.app/menu/products/")
-    // fetch("http://127.0.0.1:8000/menu/products/")
-        .then(res => res.json())
-        .then((data) => {homePage_cart_Detail(data),console.log(data)})
+        .then(response => response.json())
+        .then((data) => {
+            console.log('Products fetched:', data);
+            homePage_cart_Detail(data);  // Pass the fetched data to the cart details function
+        })
         .catch((error) => {
-            console.log("Error fetching data:", error);
+            console.error("Error fetching products:", error);
+            alert('Error loading products. Please try again later.');
         });
 };
 
-
-
+// Function to display the products in the cart
 const homePage_cart_Detail = (data) => {
-    // console.log("Full Product detail:", data);
     const parent = document.getElementById("home_Cart_Show");
-    parent.innerHTML = '';
+    parent.innerHTML = '';  // Clear the container before adding new elements
 
     let savedCartIds = JSON.parse(localStorage.getItem("SavedCartIds")) || [];
 
@@ -71,15 +85,12 @@ const homePage_cart_Detail = (data) => {
             savedCartIds.push(cart_id);
             localStorage.setItem("SavedCartIds", JSON.stringify(savedCartIds));
         }
-        
+
         const div = document.createElement("div");
         div.classList.add("card", "mb-4");
         div.style.width = '18rem';
 
-        // const imageUrl = `https://final-food-project.onrender.com${cart.image}`;
-        // const imageUrl = `https://foodproject-backened-django.vercel.app${cart.image}`;
-        
-        const imageUrl = `${cart.image}`;
+        const imageUrl = `${cart.image}`;  // Dynamic image URL from API
         console.log(imageUrl);
 
         div.innerHTML = `
@@ -88,31 +99,21 @@ const homePage_cart_Detail = (data) => {
                 <h5 class="card-title">Food name: ${cart.product_name}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Category: ${cart.category.category_name}</h6>
                 <p class="card-text">Description: ${cart.description.slice(0, 30)}...</p>
-                <p class="card-text"><strong>Price:</strong>${cart.price}</p>
-              
+                <p class="card-text"><strong>Price:</strong> ${cart.price}</p>
                 <p class="card-text"><strong>Stock:</strong> ${cart.stock}</p>
                 <p class="card-text"><strong>Discount:</strong> Available</p>
                 <a href="" class="btn btn-primary" onclick="placeOrder('${cart.id}', event)">Order Now</a>
-
-
-
-                <a href="#" class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</a>
+                <a href="#" class="btn btn-secondary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</a>
             </div>
         `;
         parent.appendChild(div);
     });
 
-    if (isAuthenticated()) {
-        document.querySelector('main.container.mt-4').style.display = 'block';
-    } else {
-        document.querySelector('main.container.mt-4').style.display = 'none';
-    }
+    // Conditionally display the main content based on authentication
+    document.querySelector('main.container.mt-4').style.display = isAuthenticated() ? 'block' : 'none';
 
-    if (isAuthenticated()) {
-        document.getElementById('display-profile-button').style.display = 'block';
-    } else {
-        document.getElementById('display-profile-button').style.display = 'none';
-    }
+    // Show or hide the profile button based on authentication
+    document.getElementById('display-profile-button').style.display = isAuthenticated() ? 'block' : 'none';
 };
 
 
