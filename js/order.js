@@ -65,8 +65,6 @@
 //     }
 // };
 
-
-
 const displayOrderHistory = async () => {
     const tbody = document.querySelector('#order-history tbody');
     if (!tbody) {
@@ -74,6 +72,7 @@ const displayOrderHistory = async () => {
         return;
     }
 
+    console.log('Tbody found. Clearing previous content.');
     tbody.innerHTML = '';
 
     const token = localStorage.getItem('token');
@@ -83,10 +82,12 @@ const displayOrderHistory = async () => {
             <td colspan="5" class="text-danger text-center">Please log in to see your order history.</td>
         `;
         tbody.appendChild(errorRow);
+        console.warn('No token found. User not logged in.');
         return; 
     }
 
     try {
+        console.log('Fetching product data with token:', token);
         const response = await fetch('https://foodproject-backened-django.vercel.app/menu/products/', {
             method: 'GET',
             headers: {
@@ -96,6 +97,7 @@ const displayOrderHistory = async () => {
         });
 
         if (!response.ok) {
+            console.error('Network response error:', response.statusText);
             throw new Error('Network response was not ok');
         }
 
@@ -105,8 +107,9 @@ const displayOrderHistory = async () => {
         const orderHistory = [
             { product_id: 1, quantity: 2, delivery_status: 'Delivered' },
             { product_id: 2, quantity: 1, delivery_status: 'Pending' },
-           
         ];
+
+        console.log('Order history:', orderHistory); // Log order history for verification
         
         orderHistory.forEach(order => {
             const product = productData.data.find(product => product.id === order.product_id);
@@ -138,7 +141,6 @@ const displayOrderHistory = async () => {
         tbody.appendChild(errorRow);
     }
 };
-
 
 
 
