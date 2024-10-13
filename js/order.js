@@ -1,5 +1,3 @@
-
-
 const displayOrderHistory = async () => {
     const tbody = document.querySelector('#order-history tbody');
     if (!tbody) {
@@ -9,24 +7,22 @@ const displayOrderHistory = async () => {
 
     tbody.innerHTML = '';
 
-    // Check for the authentication token
     const token = localStorage.getItem('token');
     if (!token) {
-        // Display a message if the user is not logged in
         const errorRow = document.createElement('tr');
         errorRow.innerHTML = `
             <td colspan="5" class="text-danger text-center">Please log in to see your order history.</td>
         `;
         tbody.appendChild(errorRow);
-        return; // Exit the function
+        return; 
     }
 
     try {
-        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now', {
+        const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${token}` // Include token if authentication is needed
+                'Authorization': `Token ${token}`
             }
         });
 
@@ -35,24 +31,23 @@ const displayOrderHistory = async () => {
         }
 
         const orders = await response.json();
+        console.log('Fetched orders:', orders);  // Check the structure of the orders data
         
-        // Assuming orders returned from API includes cartId that maps to the products
+        // Assuming orders is an array and you want to process them
         orders.forEach(order => {
-            // Find the product based on the cartId or id in the order
-            const product = data.data.find(product => product.id === order.product_id); // Assuming order has product_id
-
+            const product = data.data.find(product => product.id === order.product_id);
             if (product) {
                 const row = document.createElement('tr');
-                const imageUrl = product.image; // Get image from product
+                const imageUrl = product.image || 'default-image.jpg'; // Fallback image
                 row.innerHTML = `
                     <td>
-                        <img src="${imageUrl || 'default-image.jpg'}" alt="${product.product_name}" style="width: 50px; height: auto;">
+                        <img src="${imageUrl}" alt="${product.product_name}" style="width: 50px; height: auto;">
                         ${product.product_name}
                     </td>
-                    <td>$${parseFloat(product.price).toFixed(2)}</td>  <!-- Display price correctly -->
+                    <td>$${parseFloat(product.price).toFixed(2)}</td>
                     <td>${order.quantity}</td>
                     <td>$${(parseFloat(product.price) * order.quantity).toFixed(2)}</td>
-                    <td>${order.order.delivery_status}</td>
+                    <td>${order.delivery_status}</td> <!-- Make sure this exists on the order object -->
                 `;
                 tbody.appendChild(row);
             } else {
@@ -69,8 +64,3 @@ const displayOrderHistory = async () => {
         tbody.appendChild(errorRow);
     }
 };
-
-// Ensure the function is called after DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    displayOrderHistory();
-});
