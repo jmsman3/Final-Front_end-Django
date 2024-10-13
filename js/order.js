@@ -65,6 +65,7 @@
 //     }
 // };
 
+
 const displayOrderHistory = async () => {
     const tbody = document.querySelector('#order-history tbody');
     if (!tbody) {
@@ -72,7 +73,6 @@ const displayOrderHistory = async () => {
         return;
     }
 
-    console.log('Tbody found. Clearing previous content.');
     tbody.innerHTML = '';
 
     const token = localStorage.getItem('token');
@@ -82,12 +82,10 @@ const displayOrderHistory = async () => {
             <td colspan="5" class="text-danger text-center">Please log in to see your order history.</td>
         `;
         tbody.appendChild(errorRow);
-        console.warn('No token found. User not logged in.');
         return; 
     }
 
     try {
-        console.log('Fetching product data with token:', token);
         const response = await fetch('https://foodproject-backened-django.vercel.app/menu/products/', {
             method: 'GET',
             headers: {
@@ -97,39 +95,34 @@ const displayOrderHistory = async () => {
         });
 
         if (!response.ok) {
-            console.error('Network response error:', response.statusText);
             throw new Error('Network response was not ok');
         }
 
         const productData = await response.json();
         console.log('Fetched products:', productData);  
-        
+
         const orderHistory = [
             { product_id: 1, quantity: 2, delivery_status: 'Delivered' },
             { product_id: 2, quantity: 1, delivery_status: 'Pending' },
         ];
 
-        console.log('Order history:', orderHistory); // Log order history for verification
-        
         orderHistory.forEach(order => {
-            const product = productData.data.find(product => product.id === order.product_id);
-            if (product) {
-                const row = document.createElement('tr');
-                const imageUrl = product.image || 'default-image.jpg'; 
-                row.innerHTML = `
-                    <td>
-                        <img src="${imageUrl}" alt="${product.product_name}" style="width: 50px; height: auto;">
-                        ${product.product_name}
-                    </td>
-                    <td>$${parseFloat(product.price).toFixed(2)}</td>
-                    <td>${order.quantity}</td>
-                    <td>$${(parseFloat(product.price) * order.quantity).toFixed(2)}</td>
-                    <td>${order.delivery_status}</td> <!-- Ensure this exists on the order object -->
-                `;
-                tbody.appendChild(row);
-            } else {
-                console.warn(`Product not found for order ID: ${order.product_id}`);
-            }
+            const row = document.createElement('tr');
+            const imageUrl = 'default-image.jpg'; // Fallback image
+            const productName = `Product ID: ${order.product_id}`; // Default product name for illustration
+            const productPrice = '0.00'; // Default price for illustration
+            
+            row.innerHTML = `
+                <td>
+                    <img src="${imageUrl}" alt="${productName}" style="width: 50px; height: auto;">
+                    ${productName}
+                </td>
+                <td>$${productPrice}</td>
+                <td>${order.quantity}</td>
+                <td>$${(parseFloat(productPrice) * order.quantity).toFixed(2)}</td>
+                <td>${order.delivery_status}</td>
+            `;
+            tbody.appendChild(row);
         });
 
     } catch (error) {
@@ -141,9 +134,6 @@ const displayOrderHistory = async () => {
         tbody.appendChild(errorRow);
     }
 };
-
-
-
 
 
 
