@@ -30,8 +30,11 @@ function loadFoodItemsByCategory(categoryId) {
                     foodItemDiv.classList.add("card", "m-3");  // Add margin to create space between cards
                     foodItemDiv.style.width = '18rem'; // Adjust card width to match
 
-                    const imageUrl = `https://foodproject-backened-django.vercel.app${item.image}`;
-                    // Construct the content (image, title, price, description)
+                    // const imageUrl = `https://foodproject-backened-django.vercel.app${item.image}`;
+                                
+                    const imageUrl = `${item.image}`;  
+                    console.log(imageUrl);
+                                // Construct the content (image, title, price, description)
                     foodItemDiv.innerHTML = `
                     
                         <img src="${imageUrl}" class="card-img-top" alt="${item.product_name}">
