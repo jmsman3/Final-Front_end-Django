@@ -18,6 +18,7 @@ const displayOrderHistory = async () => {
     }
 
     try {
+        // Fetch orders first
         const response = await fetch('https://foodproject-backened-django.vercel.app/order/order_now/', {
             method: 'GET',
             headers: {
@@ -32,10 +33,24 @@ const displayOrderHistory = async () => {
 
         const orders = await response.json();
         console.log('Fetched orders:', orders);  // Check the structure of the orders data
-        
+
+        // Fetch products to map against the order items
+        const productsResponse = await fetch('https://foodproject-backened-django.vercel.app/menu/products/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!productsResponse.ok) {
+            throw new Error('Network response was not ok while fetching products');
+        }
+
+        const productsData = await productsResponse.json();  // Store fetched products
+
         // Assuming orders is an array and you want to process them
         orders.forEach(order => {
-            const product = data.data.find(product => product.id === order.product_id);
+            const product = productsData.data.find(product => product.id === order.product); // Change order.product_id to order.product based on your API structure
             if (product) {
                 const row = document.createElement('tr');
                 const imageUrl = product.image || 'default-image.jpg'; // Fallback image
@@ -51,7 +66,7 @@ const displayOrderHistory = async () => {
                 `;
                 tbody.appendChild(row);
             } else {
-                console.warn(`Product not found for order ID: ${order.product_id}`);
+                console.warn(`Product not found for order ID: ${order.product}`);
             }
         });
 
@@ -64,3 +79,8 @@ const displayOrderHistory = async () => {
         tbody.appendChild(errorRow);
     }
 };
+
+// Ensure the function is called after DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    displayOrderHistory();
+});
