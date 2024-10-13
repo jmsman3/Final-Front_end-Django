@@ -4,28 +4,25 @@ const isAuthenticated = () => {
 };
 
 // Place Order function
-const placeOrder = (cartId, event) => {
+const placeOrder = (productId, event) => {
     event.preventDefault();  // Prevent default behavior of the button
 
-    // Check if the user is authenticated
     if (!isAuthenticated()) {
-        // If not authenticated, show an alert and redirect to the login page
         alert('Please log in to place an order.');
-        window.location.href = 'login.html';  // Redirect to the login page
+        window.location.href = 'login.html';
         return;
     }
 
-    // If authenticated, proceed to place the order
-    console.log('Placing order with cartId:', cartId);
+    console.log('Placing order with productId:', productId);
     console.log('Token:', localStorage.getItem('token'));
 
     fetch('https://foodproject-backened-django.vercel.app/order/order_now/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${localStorage.getItem('token')}`  // Add authorization header
+            'Authorization': `Token ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({cartId})  // Send cartId in the request body
+        body: JSON.stringify({ product: productId, quantity: 1 })  // Send the correct product ID
     })
     .then(response => {
         console.log('Response status:', response.status);
@@ -33,7 +30,6 @@ const placeOrder = (cartId, event) => {
     })
     .then(({ response, data }) => {
         if (response.ok) {
-            // On successful order, redirect to order confirmation or history page
             console.log('Order placed successfully:', data);
             window.location.href = 'order.html';
         } else {
@@ -46,6 +42,7 @@ const placeOrder = (cartId, event) => {
         alert('There was an issue placing your order. Please try again.');
     });
 };
+
 
 
 const homePageCart = () => {
@@ -95,7 +92,8 @@ const homePage_cart_Detail = (data) => {
               
                 <p class="card-text"><strong>Stock:</strong> ${cart.stock}</p>
                 <p class="card-text"><strong>Discount:</strong> Available</p>
-                <a href="#" class="btn btn-primary" onclick="placeOrder('${cart.id}', event)">Order Now</a>
+                <a href="" class="btn btn-primary" onclick="placeOrder('${cart.id}', event)">Order Now</a>
+
 
 
                 <a href="#" class="btn btn-primary" onclick="handle_AddToCart('${cart.id}', '${cart.product_name}', '${cart.price}', '${cart.stock}', '${cart.category.category_name}', '${imageUrl}', event)">Add to Cart</a>
