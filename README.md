@@ -39,11 +39,6 @@ Follow these steps to set up the frontend locally:
 
    - Update content, styles, or scripts as needed.
 
-#### **Screenshots**
-
-
-![image](https://github.com/user-attachments/assets/3a93ac0b-d602-45e9-b310-22ea54271d4f)
-
 
 ---
 
